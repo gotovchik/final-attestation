@@ -11,7 +11,8 @@
 Разработку вести в этом репозитории, использовать пул реквесты на изменения.  
 Программа должна запускаться и работать, ошибок при выполнении программы быть не должно.  
 
-## Задания и ход выполнения работы.
+## Задания и ход выполнения работы
+
 Создал репозиторий на github. Далее создал рабочую директорию и клонировал репозиторий.
 
 ```shell
@@ -46,6 +47,9 @@ CREATE DATABASE "HumanFriends"
 ```
 
 8. Создать таблицы с иерархией из диаграммы в БД
+9. Заполнить низкоуровневые таблицы именами(животных), командами
+которые они выполняют и датами рождения
+
 <details>
 <summary>SQL-запросы</summary>
 
@@ -101,16 +105,17 @@ CREATE TABLE IF NOT EXISTS donkeys
 (
  donkey_id serial PRIMARY KEY,
  donkey_name VARCHAR(20)  NOT NULL,
+ birthday DATA NOT NULL,
  command VARCHAR(20),
  animal_id int NOT NULL,
  FOREIGN KEY (animal_id) REFERENCES pack_animals (animal_id) 
 );
 
-INSERT INTO donkeys (donkey_name, command, animal_id)
+INSERT INTO donkeys (donkey_name, birthday, command, animal_id)
 VALUES
-('Иа', 'Везти!', 2),
-('Сет', 'Пить!', 2),
-('Ниниб', 'Стимул!', 2);
+('Иа', '2020-01-01', 'Везти!', 2),
+('Сет', '2021-06-12', 'Пить!', 2),
+('Ниниб', '2022-07-11', 'Стимул!', 2);
 
 --DROP TABLE IF EXISTS horses
 
@@ -118,16 +123,17 @@ CREATE TABLE IF NOT EXISTS horses
 (
  horse_id serial PRIMARY KEY,
  horse_name VARCHAR(20)  NOT NULL,
+ birthday DATA NOT NULL,
  command VARCHAR(20),
  animal_id int NOT NULL,
  FOREIGN KEY (animal_id) REFERENCES pack_animals (animal_id) 
 );
 
-INSERT INTO horses (horse_name, command, animal_id)
+INSERT INTO horses (horse_name, birthday, command, animal_id)
 VALUES
-('Буцефал', 'Захватить!', 1),
-('Лошарик', 'Жонглировать!', 1),
-('Педальный', 'Но, пошла!', 1);
+('Буцефал', '2021-03-12', 'Захватить!', 1),
+('Лошарик', '2022-07-11', 'Жонглировать!', 1),
+('Педальный', '2021-06-12', 'Но, пошла!', 1);
 
 --DROP TABLE IF EXISTS camels
 
@@ -135,16 +141,17 @@ CREATE TABLE IF NOT EXISTS camels
 (
  camel_id serial PRIMARY KEY,
  camel_name VARCHAR(20)  NOT NULL,
+ birthday DATA NOT NULL,
  command VARCHAR(20),
  animal_id int NOT NULL,
  FOREIGN KEY (animal_id) REFERENCES pack_animals (animal_id) 
 );
 
-INSERT INTO camels (camel_name, command, animal_id)
+INSERT INTO camels (camel_name, birthday, command, animal_id)
 VALUES
-('Вася', 'Право!', 3),
-('Вильма', 'Лево!', 3),
-('Тоффи', 'Стой!', 3);
+('Вася', '2020-01-01', 'Право!', 3),
+('Вильма', '2020-11-10', 'Лево!', 3),
+('Тоффи', '2020-03-12', 'Стой!', 3);
 
 --DROP TABLE IF EXISTS cats
 
@@ -152,15 +159,16 @@ CREATE TABLE IF NOT EXISTS cats
 (
  cat_id serial PRIMARY KEY,
  cat_name VARCHAR(20)  NOT NULL,
+ birthday DATA NOT NULL,
  command VARCHAR(20),
  pet_id int NOT NULL,
  FOREIGN KEY (pet_id) REFERENCES pets (pet_id) 
 );
 
-INSERT INTO cats (cat_name, command, pet_id)
+INSERT INTO cats (cat_name, birthday, command, pet_id)
 VALUES
-('Рыжик', 'Есть!', 1),
-('Барсик', 'Спать!', 1),
+('Рыжик', '2022-07-11', 'Есть!', 1),
+('Барсик', '2022-07-11', 'Спать!', 1),
 
 --DROP TABLE IF EXISTS в dogs
 
@@ -168,15 +176,16 @@ CREATE TABLE IF NOT EXISTS dogs
 (
  dog_id serial PRIMARY KEY,
  dog_name VARCHAR(20)  NOT NULL,
+ birthday DATA NOT NULL,
  command VARCHAR(20),
  pet_id int NOT NULL,
  FOREIGN KEY (pet_id) REFERENCES pets (pet_id) 
 );
 
-INSERT INTO dogs (dog_name, command, pet_id)
+INSERT INTO dogs (dog_name, birthday, command, pet_id)
 VALUES
-('Барбос', 'Сидеть!', 2),
-('Рекс', 'В погоню!', 2),
+('Барбос', '2020-11-10', 'Сидеть!', 2),
+('Рекс', '2020-01-01', 'В погоню!', 2),
 
 --DROP TABLE IF EXISTS в hamsters
 
@@ -184,19 +193,97 @@ CREATE TABLE IF NOT EXISTS hamsters
 (
  hamster_id serial PRIMARY KEY,
  hamster_name VARCHAR(20)  NOT NULL,
+ birthday DATA NOT NULL,
  command VARCHAR(20),
  pet_id int NOT NULL,
  FOREIGN KEY (pet_id) REFERENCES pets (pet_id) 
 );
 
-INSERT INTO hamsters (hamster_name, command, pet_id)
+INSERT INTO hamsters (hamster_name, birthday, command, pet_id)
 VALUES
-('Хомка', 'Смирно!', 3),
-('Пушок', 'Сальто!', 3),
+('Хомка', '2020-03-12', 'Смирно!', 3),
+('Пушок', '2020-01-01', 'Сальто!', 3),
 
 ```
 
 </details>
+
+10. Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой
+питомник на зимовку. Объединить таблицы лошади, и ослы в одну таблицу.
+
+<details>
+  <summary>SQL</summary>
+
+```sql
+TRUNCATE TABLE camels
+
+SELECT * FROM horses
+UNION
+SELECT * FROM donkeys
+
+```
+
+</details>
+
+11. Создать новую таблицу “молодые животные” в которую попадут все
+животные старше 1 года, но младше 3 лет и в отдельном столбце с точностью
+до месяца подсчитать возраст животных в новой таблице
+
+<details>
+  <summary>SQL</summary>
+
+```sql
+CREATE TEMPORARY TABLE animals AS 
+SELECT *, 'Лошади' as genus FROM horses
+UNION SELECT *, 'Ослы' AS genus FROM donkeys
+UNION SELECT *, 'Собаки' AS genus FROM dogs
+UNION SELECT *, 'Кошки' AS genus FROM cats
+UNION SELECT *, 'Хомяки' AS genus FROM hamsters;
+
+CREATE TABLE young_animals AS
+SELECT Name, birthday, commands, genus, TIMESTAMPDIFF(MONTH, Birthday, CURDATE()) AS age_in_month
+FROM animals WHERE birthday BETWEEN ADDDATE(curdate(), INTERVAL -3 YEAR) AND ADDDATE(CURDATE(), INTERVAL -1 YEAR);
+
+```
+</details>
+
+12. Объединить все таблицы в одну, при этом сохраняя поля, указывающие на
+прошлую принадлежность к старым таблицам.
+
+<details>
+  <summary>SQL</summary>
+
+```sql
+
+SELECT h.name, h.birthday, h.commands, p.animal_name, y.age_in_month 
+FROM horses h
+LEFT JOIN young_animal ya ON y.name = h.name
+LEFT JOIN pack_animals pa ON p.id = h.animal_id
+UNION 
+SELECT d.name, d.birthday, d.commands, p.animal_name, y.age_in_month 
+FROM donkeys d 
+LEFT JOIN young_animal y ON ya.name = d.name
+LEFT JOIN packed_animals p ON pa.id = d.animal_id
+UNION
+SELECT c.name, c.birthday, c.commands, ha.pet_name, y.age_in_month 
+FROM cats c
+LEFT JOIN young_animal y ON y.name = c.name
+LEFT JOIN home_animals ha ON ha.id = c.pet_id
+UNION
+SELECT d.name, d.birthday, d.commands, ha.pet_name, y.age_in_month 
+FROM dogs d
+LEFT JOIN young_animal y ON y.name = d.name
+LEFT JOIN home_animals ha ON ha.id = d.pet_id
+UNION
+SELECT hm.name, hm.birthday, hm.commands, ha.pet_name, y.age_in_month 
+FROM hamsters hm
+LEFT JOIN young_animal y ON y.name = hm.name
+LEFT JOIN home_animals ha ON ha.id = hm.pet_id;
+
+```
+
+</details>
+
 
 13. Создать класс с Инкапсуляцией методов и наследованием по диаграмме.
 14. Написать программу, имитирующую работу реестра домашних животных.
