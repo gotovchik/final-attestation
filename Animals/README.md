@@ -24,7 +24,7 @@ dotnet add reference ..\BusinessDomain\BusinessDomain.csproj
 dotnet restore
 ```
 
-Где Application - будущее приложение, BusinessDomain - библиотека для хранения моделей, Persistence - для создания контекста данных и микраций с базой данных.
+Где Application - будущее приложение, BusinessDomain - библиотека для хранения моделей, Persistence - для создания контекста данных и миграций с базой данных.
 
 ## Использование подхода Code First
 
@@ -35,7 +35,7 @@ cd .\Persistence\
 dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 ```
 
-Я буду использовать подключение к бд PostgreSQL, запущенную в контейнере Docker.
+Мы будем использовать подключение к бд PostgreSQL, запущенную в контейнере Docker.
 
 ```powershell
 cd ..\Application\
@@ -46,7 +46,7 @@ dotnet restore
 
 *dotnet restore для обновления зависимостей.*
 
-Добавляю файл appsetting.json для хранения строки подключения к БД.
+Добавляем файл appsetting.json для хранения строки подключения к БД.
 
 ```json
 {
@@ -56,7 +56,7 @@ dotnet restore
 }
 ```
 
-Обновляю файл проекта, чтобы файл конфигурации копировался при сборке.
+Обновляем файл проекта, чтобы файл конфигурации копировался при сборке.
 
 ```csharp
 <ItemGroup>
@@ -86,4 +86,4 @@ var connectionOption = new DbContextOptionsBuilder<AnimalsContext>()
   .Options;
 ```
 
-*далее будем использорвать объект настроек подключения для создания экземпляра контекста данных.*
+*далее будем использовать объект настроек подключения для создания экземпляра контекста данных.*
