@@ -13,5 +13,10 @@ public class Program
     var connectionOption = new DbContextOptionsBuilder<AnimalsContext>()
       .UseNpgsql(configuration.GetConnectionString("PostgreSqlConnection"))
       .Options;
+
+    var db = new AnimalsContext(connectionOption);
+    var provider = new StartDataProvider(db);
+    provider.Provide();
+
   }
 }
