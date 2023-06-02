@@ -1,6 +1,6 @@
 namespace BusinessDomain
 {
-  public class Horse
+  public class Horse : IAnimal
   {
     public Guid id { get; set; }
     public string? Name { get; set; }

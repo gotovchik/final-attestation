@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.View;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Persistence;
 
@@ -17,6 +18,10 @@ public class Program
     var db = new AnimalsContext(connectionOption);
     var provider = new StartDataProvider(db);
     provider.Provide();
+
+    var app = new AnimalConsoleView(db);
+    app.AddAnimal();
+
 
   }
 }
