@@ -88,25 +88,25 @@ namespace Application.Controllers
 
     public IAnimal? FindByName(string name)
     {
-      if (!(db.Cats.Find(name) is null))
+      if (!(db.Cats.FirstOrDefault(a => a.Name == name) is null))
       {
-        return db.Cats.Find(name);
+        return db.Cats.FirstOrDefault(a => a.Name == name);
       }
-      if (!(db.Dogs.Find(name) is null))
+      if (!(db.Dogs.FirstOrDefault(a => a.Name == name) is null))
       {
-        return db.Dogs.Find(name);
+        return db.Dogs.FirstOrDefault(a => a.Name == name);
       }
-      if (!(db.Hamsters.Find(name) is null))
+      if (!(db.Hamsters.FirstOrDefault(a => a.Name == name) is null))
       {
-        return db.Hamsters.Find(name);
+        return db.Hamsters.FirstOrDefault(a => a.Name == name);
       }
-      if (!(db.Horses.Find(name) is null))
+      if (!(db.Horses.FirstOrDefault(a => a.Name == name) is null))
       {
-        return db.Horses.Find(name);
+        return db.Horses.FirstOrDefault(a => a.Name == name);
       }
-      if (!(db.Donkeys.Find(name) is null))
+      if (!(db.Donkeys.FirstOrDefault(a => a.Name == name) is null))
       {
-        return db.Donkeys.Find(name);
+        return db.Donkeys.FirstOrDefault(a => a.Name == name);
       }
       return null;
     }

@@ -20,7 +20,45 @@ public class Program
     provider.Provide();
 
     var app = new AnimalConsoleView(db);
-    app.AddAnimal();
+
+    app.Greetings();
+    app.Menu();
+    ConsoleKeyInfo key = Console.ReadKey();
+    while (!(key.KeyChar == '0'))
+    {
+      switch (key.KeyChar)
+      {
+        case '1':
+          app.ShowAllAnimals();
+          app.Menu();
+          key = Console.ReadKey();
+          break;
+        case '2':
+          app.AddAnimal();
+          app.Menu();
+          key = Console.ReadKey();
+          break;
+        case '3':
+          app.ShowAnimalCommands();
+          app.Menu();
+          key = Console.ReadKey();
+          break;
+        case '4':
+          app.LearnNewCommand();
+          app.Menu();
+          key = Console.ReadKey();
+          break;
+        default:
+          Console.WriteLine($"Такого пункта меню нет. Попробуйте еще раз!");
+          app.Menu();
+          key = Console.ReadKey();
+          break;
+      }
+    }
+
+
+
+
 
 
   }

@@ -13,6 +13,17 @@ namespace Application.View
       Controller = new AnimalController(db);
     }
 
+    public void Greetings()
+    {
+      Console.WriteLine("Вас приветствует приложение реестра домашних питомцев!\n");
+    }
+    public void Menu()
+    {
+      Console.WriteLine("Выберите пункт меню:\n\t1. Вывести список всех животных в реестре." +
+                      "\t2. Добавить новое животное.\n\t3. Вывести список команд конкретного животного." +
+                      "\t4. Добавить животному новую выученную команду.\n\t0. Выход из приложения.");
+    }
+
     public void ShowAllCommands()
     {
       List<Command> commands = Controller.GetAllCommands();
