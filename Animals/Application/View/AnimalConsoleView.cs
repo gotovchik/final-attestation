@@ -13,6 +13,35 @@ namespace Application.View
       Controller = new AnimalController(db);
     }
 
+    public void Greetings()
+    {
+      Console.WriteLine("Вас приветствует приложение реестра домашних питомцев!\n");
+    }
+    public void Menu()
+    {
+      Console.WriteLine("Выберите пункт меню:\n\t1. Вывести список всех животных в реестре." +
+                      "\t2. Добавить новое животное.\n\t3. Вывести список команд конкретного животного." +
+                      "\t4. Добавить животному новую выученную команду.\n\t0. Выход из приложения.");
+    }
+
+    public void ShowAllCommands()
+    {
+      List<Command> commands = Controller.GetAllCommands();
+      Console.WriteLine($"Все команды, изучаемые в реестре:");
+
+      foreach (Command command in commands)
+      {
+        Console.WriteLine($"\t{command.Name}");
+      }
+    }
+
+    public void AddCommand()
+    {
+      Console.WriteLine($"Введите название команды, которую хотели бы добавить для изучения:");
+      string? name = Console.ReadLine();
+      Controller.AddCommand(name);
+    }
+
     public void ShowAllAnimals()
     {
       List<IAnimal> animals = Controller.GetAllAnimals();
@@ -71,8 +100,42 @@ namespace Application.View
       DateOnly birthday = DateOnly.FromDateTime(dt);
       Controller.AddAnimal(animal, name, birthday);
 
+    }
 
+    public void LearnNewCommand()
+    {
+      Console.WriteLine($"Введите кличку животного, которого обучили новой команде:");
+      string? name = Console.ReadLine();
+      while (name == String.Empty || Controller.FindByName(name) is null)
+      {
+        Console.WriteLine("Животного с такой кличкой нет в реестре. Проверьте, правильно ли вы вводите кличку и попробуйте еще раз!");
+        name = Console.ReadLine();
+      }
+      Console.WriteLine($"Введите команду, которую выучило животное:");
+      string? commandName = Console.ReadLine();
+      while (commandName == String.Empty)
+      {
+        Console.WriteLine("Недопускается пустое значение. Введите команду!");
+        commandName = Console.ReadLine();
+      }
+      Controller.LearnNewCommand(name, commandName);
+    }
+    public void ShowAnimalCommands()
+    {
+      Console.WriteLine($"Введите кличку животного, команды которого хотели бы узнать:");
+      string? name = Console.ReadLine();
+      while (name == String.Empty || Controller.FindByName(name) is null)
+      {
+        Console.WriteLine("Животного с такой кличкой нет в реестре. Проверьте, правильно ли вы вводите кличку и попробуйте еще раз!");
+        name = Console.ReadLine();
+      }
+      List<Command> animalCommands = Controller.GetAnimalCommands(name);
+      Console.WriteLine($"Команды, выученные животным: {name}");
 
+      foreach (Command command in animalCommands)
+      {
+        Console.WriteLine($"\t{command.Name}");
+      }
     }
   }
 }

@@ -11,6 +11,21 @@ namespace Application.Controllers
     {
       this.db = db;
     }
+
+    public List<Command> GetAllCommands()
+    {
+      return db.Commands.ToList();
+    }
+
+    public void AddCommand(string? name)
+    {
+      Command command = new Command
+      {
+        Name = name
+      };
+      db.Commands.Add(command);
+      db.SaveChanges();
+    }
     public List<IAnimal> GetAllAnimals()
     {
       List<IAnimal> animals = new();
@@ -70,5 +85,39 @@ namespace Application.Controllers
       }
       db.SaveChanges();
     }
+
+    public IAnimal? FindByName(string name)
+    {
+      if (!(db.Cats.FirstOrDefault(a => a.Name == name) is null))
+      {
+        return db.Cats.FirstOrDefault(a => a.Name == name);
+      }
+      if (!(db.Dogs.FirstOrDefault(a => a.Name == name) is null))
+      {
+        return db.Dogs.FirstOrDefault(a => a.Name == name);
+      }
+      if (!(db.Hamsters.FirstOrDefault(a => a.Name == name) is null))
+      {
+        return db.Hamsters.FirstOrDefault(a => a.Name == name);
+      }
+      if (!(db.Horses.FirstOrDefault(a => a.Name == name) is null))
+      {
+        return db.Horses.FirstOrDefault(a => a.Name == name);
+      }
+      if (!(db.Donkeys.FirstOrDefault(a => a.Name == name) is null))
+      {
+        return db.Donkeys.FirstOrDefault(a => a.Name == name);
+      }
+      return null;
+    }
+    public void LearnNewCommand(string name, string commandName)
+    {
+      FindByName(name).Commands.Add(new Command { Name = commandName });
+      db.SaveChanges();
+    }
+
+    public List<Command> GetAnimalCommands(string name) =>
+      FindByName(name).Commands.ToList();
+
   }
 }
