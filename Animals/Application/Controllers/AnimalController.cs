@@ -11,6 +11,21 @@ namespace Application.Controllers
     {
       this.db = db;
     }
+
+    public List<Command> GetAllCommands()
+    {
+      return db.Commands.ToList();
+    }
+
+    public void AddCommand(string? name)
+    {
+      Command command = new Command
+      {
+        Name = name
+      };
+      db.Commands.Add(command);
+      db.SaveChanges();
+    }
     public List<IAnimal> GetAllAnimals()
     {
       List<IAnimal> animals = new();
@@ -70,5 +85,39 @@ namespace Application.Controllers
       }
       db.SaveChanges();
     }
+
+    public IAnimal? FindByName(string name)
+    {
+      if (!(db.Cats.Find(name) is null))
+      {
+        return db.Cats.Find(name);
+      }
+      if (!(db.Dogs.Find(name) is null))
+      {
+        return db.Dogs.Find(name);
+      }
+      if (!(db.Hamsters.Find(name) is null))
+      {
+        return db.Hamsters.Find(name);
+      }
+      if (!(db.Horses.Find(name) is null))
+      {
+        return db.Horses.Find(name);
+      }
+      if (!(db.Donkeys.Find(name) is null))
+      {
+        return db.Donkeys.Find(name);
+      }
+      return null;
+    }
+    public void LearnNewCommand(string name, string commandName)
+    {
+      FindByName(name).Commands.Add(new Command { Name = commandName });
+      db.SaveChanges();
+    }
+
+    public List<Command> GetAnimalCommands(string name) =>
+      FindByName(name).Commands.ToList();
+
   }
 }
